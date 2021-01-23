@@ -20,15 +20,14 @@ import os
 
 
 # initialize initial learning rate for Adam optimizer, epochs, and batch size
-INIT_LR = 1e-4
-EPOCHS = 20
+INIT_LR = 0.001
+EPOCHS = 30
 BS = 64
 
 # initialize target size for images to use in MobileNetV2
 target_size = 224
 
 # get images from dataset directory
-print("Loading images from dataset...")
 image_paths = list(paths.list_images("dataset"))
 data = []
 labels = []
@@ -58,7 +57,7 @@ labels = to_categorical(labels)
 
 # print(labels)
 
-# split data into default 75% testing 25% training and shuffle
+# split data into default 75% testing 25% training
 (x_train, x_test, y_train, y_test) = train_test_split(data, labels, stratify=labels, random_state=42)
 
 # construct the training image generator for data augmentation
@@ -82,7 +81,7 @@ base_model = MobileNetV2(
 	pooling='avg')
 
 for layer in base_model.layers:
-	layer.trainable = False # trainable set to false to freeze layers for fine tuning
+	layer.trainable = False #  freeze layers for fine tuning
 
 op = Dense(200, activation="relu")(base_model.output)
 op = Dropout(0.5)(op)
@@ -91,15 +90,12 @@ output_tensor = Dense(3, activation="softmax")(op)
 model = Model(inputs=base_model.input, outputs=output_tensor)
 
 # compile model
-print("Compiling model...")
 optimizer = Adam(lr=INIT_LR, decay=INIT_LR / EPOCHS) # Adam optimizer
 model.compile(
 	loss="categorical_crossentropy", 
 	optimizer=optimizer,
 	metrics=["categorical_accuracy"])
 
-# train the head of the network
-print("Training head...")
 H = model.fit(
 	aug.flow(x_train, y_train, batch_size=BS),
 	steps_per_epoch=len(x_train) // BS,
@@ -107,31 +103,12 @@ H = model.fit(
 	validation_steps=len(x_test) // BS,
 	epochs=EPOCHS)
 
-# make predictions on the testing set
-print("Evaluating network...")
-predIdxs = model.predict(x_test, batch_size=BS)
+predictions = model.predict(x_test, batch_size=BS)
 
-# for each image in the testing set we need to find the index of the
-# label with corresponding largest predicted probability
-predIdxs = np.argmax(predIdxs, axis=1)
+indices = np.argmax(predictions, axis=1)
 
-print(classification_report(y_test.argmax(axis=1), predIdxs,
+print(classification_report(y_test.argmax(axis=1), indices,
 	target_names=enc.classes_))
 
 # save model to model directory
-print("Saving model...")
-model.save("detector.model", save_format="h5")
-
-# plot the training loss and accuracy and save to plot directory
-N = EPOCHS
-plt.style.use("ggplot")
-plt.figure()
-plt.plot(np.arange(0, N), H.history["loss"], label="train_loss")
-plt.plot(np.arange(0, N), H.history["val_loss"], label="val_loss")
-plt.plot(np.arange(0, N), H.history["accuracy"], label="train_acc")
-plt.plot(np.arange(0, N), H.history["val_accuracy"], label="val_acc")
-plt.title("Training Loss and Accuracy")
-plt.xlabel("Epoch #")
-plt.ylabel("Loss/Accuracy")
-plt.legend(loc="lower left")
-plt.savefig("plot.png")
+model.save("mask_detector.model", save_format="h5")
