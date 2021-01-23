@@ -1,9 +1,54 @@
 <html>
-	<head>
-		<title>Video Streaming Demonstration</title>
-	</head>
-	<body>
-		<h1>Video Streaming Demonstration</h1>
-		<img src="{{ url_for('video_feed') }}" />
-	</body>
+  <head>
+    <title>Video Streaming Demonstration</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"
+      integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ="
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+  </head>
+  <body class="bg-dark">
+    <div class="bg-dark">
+      <div class="text-end text-white pr-2">
+        Built by Jayden, Marcus, Steven, Brittany
+      </div>
+      <div class="container text-white">
+        <h1 class="display-1 text-center">Mask Monitor</h1>
+        <p class="lead text-center">
+          An automated solution to validate customer's masks.
+        </p>
+        <img
+          class="border border-white img-fluid"
+          src="{{ url_for('video_feed') }}"
+        />
+        <div class="text-center">
+          <a href="https://github.com/Jayden-Chiu/MaskMonitor">
+            <i class="fab fa-github fa-3x mt-2"></i>
+          </a>
+          <p>Check it out on GitHub!</p>
+        </div>
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+          crossorigin="anonymous"
+        ></script>
+      </div>
+    </div>
+  </body>
 </html>
