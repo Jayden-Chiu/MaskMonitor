@@ -1,4 +1,5 @@
-from flask import Flask, render_template, Response, request, redirect, url_for
+from flask import Flask, render_template, Response, request, redirect, url_for, send_file
+from werkzeug.utils import secure_filename
 import numpy as np
 import cv2
 import imutils
@@ -36,15 +37,44 @@ def index():
     """Video streaming home page."""
     return render_template('index.html')
 
-@app.route('/upload')
+
+@app.route('/upload', methods=['GET', 'POST'])
 def upload():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file.filename != '':
+            filename = secure_filename(file.filename)
+            file.save(os.path.join("uploads", filename))
+            print(filename)
+            cap = cv2.VideoCapture(os.path.join("uploads", filename))
+
+            frame_width = int(cap.get(3))
+            frame_height = int(cap.get(4))
+
+            out = cv2.VideoWriter(os.path.join("downloads", "output.avi"), cv2.VideoWriter_fourcc(
+                'M', 'J', 'P', 'G'), 10, (frame_width, frame_height))
+
+            while (cap.isOpened()):
+                ret, frame = cap.read()
+                if np.shape(frame) == () or ret == False or frame is None:
+                    print("ERROR NONE")
+                    break
+                (frame, label) = detect_mask(frame)
+                out.write(frame)
+
+        return send_file(os.path.join("downloads", "output.avi"))
     return render_template('upload.html')
+
 
 def gen():
     """Video streaming generator function."""
     while True:
         ret, frame = cap.read()
         label = None
+
+        if np.shape(frame) == () or ret == False or frame is None:
+            print("Error reading webcam")
+            continue
 
         (frame, label) = detect_mask(frame)
 
@@ -80,6 +110,9 @@ def detect_mask(frame):
 
             # get roi from frame
             face = frame[start_y:end_y, start_x:end_x]
+            if np.shape(face) == () or face is None or face.size == 0:
+                print("Error reading face")
+                continue
             face = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
             face = cv2.resize(face, (224, 224))
             face = img_to_array(face)

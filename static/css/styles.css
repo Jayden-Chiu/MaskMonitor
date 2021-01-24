@@ -1,19 +1,30 @@
 h1,
 p,
 h3 {
-  font-family: 'Roboto', sans-serif;
+	font-family: 'Roboto', sans-serif;
 }
 
 body {
-  background: linear-gradient(#25274d, #464866);
-  color: #aaabb8;
+	background: linear-gradient(#25274d, #464866);
+	color: #aaabb8;
 }
 
 h1 {
-  color: white;
+	color: white;
 }
 
 a {
-  text-decoration: none;
-  color: #2e9cca;
+	text-decoration: none;
+	color: #2e9cca;
+}
+
+#loading {
+	margin: auto;
+	position: absolute;
+}
+
+.center-block {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
