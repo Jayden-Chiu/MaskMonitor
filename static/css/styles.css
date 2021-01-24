@@ -7,3 +7,8 @@ h3 {
 img {
   height: 90%;
 }
+
+.footer {
+  position: fixed;
+  bottom: 0;
+}
