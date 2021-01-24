@@ -36,6 +36,9 @@ def index():
     """Video streaming home page."""
     return render_template('index.html')
 
+@app.route('/upload')
+def upload():
+    return render_template('upload.html')
 
 def gen():
     """Video streaming generator function."""
