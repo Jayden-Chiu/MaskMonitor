@@ -43,7 +43,7 @@ def gen():
         ret, frame = cap.read()
         label = None
 
-        (frame, label) = detect_mask(frame)
+        (frame, num, label) = detect_mask(frame)
 
         encode_return_code, image_buffer = cv2.imencode('.jpg', frame)
         io_buf = io.BytesIO(image_buffer)
@@ -85,6 +85,8 @@ def detect_mask(frame):
             rois.append(face)
             coords.append((start_x, start_y, end_x, end_y))
 
+    num = 0
+    
     if len(rois) > 0:
         rois = np.array(rois, dtype="float32")
         preds = mask_net.predict(rois, batch_size=32)
@@ -94,6 +96,7 @@ def detect_mask(frame):
             (incorrect_mask, mask, no_mask) = pred
 
             if mask > no_mask and mask > incorrect_mask:
+                num += 1
                 label = "Mask"
                 color = (0, 255, 0)
 
@@ -110,7 +113,7 @@ def detect_mask(frame):
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
             cv2.rectangle(frame, (start_x, start_y), (end_x, end_y), color, 2)
 
-    return (frame, label)
+    return (frame, num, label)
 
 
 @app.route('/video_feed')
