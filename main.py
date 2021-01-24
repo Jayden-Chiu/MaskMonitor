@@ -17,8 +17,6 @@ import time
 import cv2
 import os
 
-output_frame = None
-
 app = Flask(__name__)
 
 cap = cv2.VideoCapture(0)
@@ -42,8 +40,11 @@ def index():
 def gen():
     """Video streaming generator function."""
     while True:
-        read_return_code, frame = cap.read()
-        frame = detect_mask(frame)
+        ret, frame = cap.read()
+        label = None
+
+        (frame, label) = detect_mask(frame)
+
         encode_return_code, image_buffer = cv2.imencode('.jpg', frame)
         io_buf = io.BytesIO(image_buffer)
         yield (b'--frame\r\n'
@@ -61,6 +62,8 @@ def detect_mask(frame):
     rois = []
     coords = []
     preds = []
+
+    label = None
 
     for i in range(0, detections.shape[2]):
         confidence = detections[0, 0, i, 2]
@@ -101,14 +104,13 @@ def detect_mask(frame):
                 label = "Incorrect Mask"
                 color = (255, 0, 0)
 
-            label = "{}: {:.2f}%".format(label, max(
-                mask, incorrect_mask, no_mask) * 100)
-
-            cv2.putText(frame, label, (start_x, start_y - 10),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
+            cv2.rectangle(frame, (start_x, start_y - 25),
+                          (end_x, start_y), color, -1)
+            cv2.putText(frame, label, (start_x, start_y-10),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
             cv2.rectangle(frame, (start_x, start_y), (end_x, end_y), color, 2)
 
-    return frame
+    return (frame, label)
 
 
 @app.route('/video_feed')
