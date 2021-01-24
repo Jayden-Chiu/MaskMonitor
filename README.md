@@ -15,4 +15,4 @@ Mask Monitor will detect and output if a person:
 ![testimage2](https://user-images.githubusercontent.com/59780037/105618717-916ae700-5db8-11eb-9221-2ef9acae9a25.jpg)
 
 # Created By
-Jayden, Marcus, Steven and Brittany
+[Jayden](https://github.com/Jayden-Chiu), [Marcus](https://github.com/MarcusChok110), [Steven](https://github.com/StevennYau) and [Brittany](https://github.com/bwong280)
