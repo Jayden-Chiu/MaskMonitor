@@ -7,7 +7,7 @@ With the COVID-19 pandemic happening, wearing masks have become essential when g
 
 # Features
 
-Users can use their live webcam footage or upload an video and Mask Monitor will detect and output if a person:
+Users can use their live webcam footage or upload a video and Mask Monitor will detect and output if a person:
 * Has their mask on correctly (Green Square)
 * Has their mask on incorrectly (Blue Square)
 * Has no mask on at all (Red Square)
