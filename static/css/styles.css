@@ -4,11 +4,11 @@ h3 {
   font-family: 'Roboto', sans-serif;
 }
 
-img {
-  height: 90%;
+body {
+  background: linear-gradient(#25274d, #464866);
+  color: #aaabb8;
 }
 
-.footer {
-  position: fixed;
-  bottom: 0;
+h1 {
+  color: white;
 }

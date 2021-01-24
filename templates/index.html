@@ -23,26 +23,34 @@
       href="{{ url_for('static', filename='css/styles.css') }}"
     />
   </head>
-  <body class="bg-dark">
-    <div class="bg-dark">
-      <div class="text-end text-white pr-2 fs-6 padded" >
-        <pre>Built by Jayden, Marcus, Steven, Brittany</pre>
+  <body class="">
+    <div class="">
+      <div class="justify-content-between d-flex pr-2 mx-3 mt-3 fs-6 padded">
+        <span class="">QHacks 2021</span>
+        <pre>Built by <a href="https://github.com/Jayden-Chiu">Jayden</a>, <a href="https://github.com/MarcusChok110">Marcus</a>, <a href="https://github.com/StevennYau">Steven</a>, and <a href="https://github.com/bwong280">Brittany</a>
+				</pre>
       </div>
-      <div class="container text-white">
+      <div class="container">
         <h1 class="display-1 text-center">Mask Monitor</h1>
         <p class="lead text-center">
           An automated solution to validate customer's masks.
         </p>
-        <img
-          class="border border-white img-fluid"
-          src="{{ url_for('video_feed') }}"
-        />
-        <div class="text-center fixed-bottom" style="height: 150px">
-          <a href="https://github.com/Jayden-Chiu/MaskMonitor">
-            <i class="fab fa-github fa-3x mt-2"></i>
-          </a>
-          <p>Check it out on GitHub!</p>
+        <div class="mt-5 h-50 row justify-content-center align-items-center">
+          <img
+            class="border border-white w-75 p-0"
+            src="{{ url_for('video_feed') }}"
+          />
         </div>
+        <nav class="navbar fixed-bottom">
+          <div class="container-fluid row">
+            <div class="text-center col-12">
+              <a href="https://github.com/Jayden-Chiu/MaskMonitor">
+                <i class="fab fa-github fa-3x mt-2"></i>
+              </a>
+              <p>Check it out on GitHub!</p>
+            </div>
+          </div>
+        </nav>
         <script
           src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
           integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
